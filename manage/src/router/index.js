@@ -23,8 +23,28 @@ const routes = [
         },
         component: () => import("../views/Welcome.vue")
       },
+      {
+        name: "profile",
+        path: "/profile",
+        redirect: "analysis",
+        meta: {
+          title: "个人中心"
+        },
+        component: () => import("../views/profile/index.vue"),
+        children:[
+          {
+            name: "analysis",
+            path: "/profile/analysis",
+            meta: {
+              title: "个人整体分析"
+            },
+            component: () => import("../views/profile/Analysis.vue"),
+          }
+        ]
+      },
     ]
   },
+  
   {
     name: "login",
     path: "/login",
@@ -33,6 +53,7 @@ const routes = [
     },
     component: () => import("../views/login/Login.vue")
   },
+  
   {
     name: "404",
     path: "/404",
@@ -41,6 +62,7 @@ const routes = [
     },
     component: () => import("../views/login/404.vue")
   },
+  
 ]
 
 const router = createRouter({
@@ -69,6 +91,8 @@ async function loadAsyncRoutes(){
 
 await loadAsyncRoutes()
 function checkPermission(path){
+  console.log('router.getRoutes() :>> ', router.getRoutes());
+  console.log('path :>> ', path);
   let hasPermission =  router.getRoutes().filter(route=>route.path == path).length
   if(hasPermission) return true
   else return false

@@ -52,8 +52,7 @@ const teacherSchema = mongoose.Schema({
   teachingClass:String,
   creditHours:Number,
   state:Number,
-  userId:Number,
-  score:Number
+  userId:Number
 })
 
 module.exports = mongoose.model("teachers",teacherSchema,"teachers")

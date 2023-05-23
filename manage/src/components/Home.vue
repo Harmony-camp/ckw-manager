@@ -32,6 +32,7 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
+                <el-dropdown-item command="profile">个人中心</el-dropdown-item>
                 <el-dropdown-item command="email">邮箱{{ userinfo.userEmail }}</el-dropdown-item>
                 <el-dropdown-item commend="logout">退出 </el-dropdown-item>
               </el-dropdown-menu>
@@ -69,9 +70,13 @@ const userMenu = reactive({
 
 const handleLogout = (key)=>{
   if(key== 'email') return 
+  if(key == "profile") {
+    router.push("/profile/analysis")
+    return 
+  }
   store.commit("saveUserInfo","")
   userinfo.value = {}
-  router.push("/login")
+  router.push({to:"/login",params:userinfo})
 }
 
 async function getNoticeCount(){
@@ -94,7 +99,7 @@ async function getMenuList(){
   }
 }
 const goAudit = ()=>{
-  router.push("/audit/approve")
+  router.push("/apply/approve")
 }
 let noticeCountData = computed(()=>{
   return store.state.noticeCount
