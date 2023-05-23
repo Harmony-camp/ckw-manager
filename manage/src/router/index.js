@@ -39,7 +39,15 @@ const routes = [
               title: "个人整体分析"
             },
             component: () => import("../views/profile/Analysis.vue"),
-          }
+          },
+          {
+            name: "award-time",
+            path: "/profile/award-time",
+            meta: {
+              title: "获奖时间"
+            },
+            component: () => import("../views/profile/AwardTime.vue"),
+          },
         ]
       },
     ]
@@ -84,15 +92,13 @@ async function loadAsyncRoutes(){
       })
       
     }catch(error){
-      throw new Error(error.stack)
+      console.log('error :>> ', error);
     }
   }
 }
 
 await loadAsyncRoutes()
 function checkPermission(path){
-  console.log('router.getRoutes() :>> ', router.getRoutes());
-  console.log('path :>> ', path);
   let hasPermission =  router.getRoutes().filter(route=>route.path == path).length
   if(hasPermission) return true
   else return false
