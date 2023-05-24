@@ -85,7 +85,7 @@ export default {
   justify-content: space-between;
 
   .left {
-    width: 25vw;
+    width: 20vw;
     padding-right: 20px;
     .box-card {
       .userinfo {

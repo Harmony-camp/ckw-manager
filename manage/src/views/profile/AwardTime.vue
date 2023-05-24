@@ -2,14 +2,22 @@
   <div class="time-manage">
     <div class="time-item">
         <el-steps  direction="vertical">
-          <div class="item">
-            <el-step :icon="Apple"/>
-            <UseTimeCard class="time-card"/>
-          </div>
-          <div class="item">
-            <el-step :icon="Apple"/>
-            <UseTimeCard class="time-card"/>
-          </div>
+          <!-- //TODO: 这里还没有填上数据 -->
+            <el-step :icon="Apple">
+              <template #title>
+                <UseTimeCard class="time-card"/>
+              </template>
+            </el-step>
+            <el-step :icon="Apple">
+              <template #title>
+                <UseTimeCard class="time-card"/>
+              </template>
+            </el-step>
+            <el-step :icon="Apple">
+              <template #title>
+                <UseTimeCard class="time-card"/>
+              </template>
+            </el-step>
         </el-steps>
       </div>
       
@@ -24,16 +32,6 @@ import { Apple } from '@element-plus/icons-vue'
 <style lang="scss" >
 .time-manage{
   margin-top: 5px;
-  .time-item{
-
-    .item{
-      display: flex;
-      .time-card{
-        left: 1px;
-      }
-    }
-
-    
-  }
+  
 }
 </style>

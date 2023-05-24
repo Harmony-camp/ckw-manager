@@ -28,7 +28,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .time-manage{
-  left: 0;
+  // width: 1000px;
   .time{
     margin-bottom: 10px;
   }
