@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onActivated } from "vue";
 import * as echarts from "echarts";
 
 export default {
@@ -54,7 +54,7 @@ export default {
         item: "999",
       },
     ]);
-    onMounted(() => {
+    onActivated(() => {
       var lineDom = echarts.init(document.getElementById("echarts-line"));
       var lineOption;
       lineOption = {
