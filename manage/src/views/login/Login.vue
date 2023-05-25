@@ -20,7 +20,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { Avatar, Lock } from "@element-plus/icons-vue";
-import {ref} from 'vue'
+import {ref,nextTick} from 'vue'
 import { useStore } from "vuex";
 import {UserLogin,getPermissionList} from '../../api'
 import utils from '../../utils/utils'
@@ -49,7 +49,9 @@ const login = ()=>{
         console.log(res);
         store.commit("saveUserInfo",res)
         await loadAsyncRoutes()
-        router.push("/welcome")
+        nextTick(()=>{
+          router.push("/welcome")
+        })
       })
     }else{
       return false
@@ -63,12 +65,12 @@ async function loadAsyncRoutes(){
       const {menuList} =  await getPermissionList()
       let routes = utils.generateRoute(menuList)
       routes.map(route=>{
-        let url = `../views/${route.component}.vue`
+        let url = `../${route.component}.vue`
         route.component =  ()=>import(/* @vite-ignore */url)
         router.addRoute("home",route)
       })
     }catch(error){
-      throw new Error(error)
+      console.log('error :>> ', error);
     }
   }
 }

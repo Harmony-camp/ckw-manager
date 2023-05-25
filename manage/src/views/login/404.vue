@@ -9,10 +9,12 @@
 
 <script setup>
 import {useRouter} from 'vue-router'
+import {MenuList} from '../../api'
 const router = useRouter()
-function goHome(){
-  router.push("/welcome")
+
+function goHome(){  router.push("/welcome")
 }
+MenuList().then().catch(err=>{router.push("/login")})
 </script>
 
 <style lang="scss" >

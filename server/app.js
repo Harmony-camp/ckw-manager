@@ -17,7 +17,14 @@ const depts = require('./routes/depts')
 const leaves = require('./routes/leaves')
 const teacher = require('./routes/teacher')
 
-app.use(koaBody());
+app.use(koaBody(
+  {
+    multipart: true,
+    formidable: {
+        maxFileSize: 200*1024*1024    // 设置上传文件大小最大限制，默认2M
+    }
+}
+));
 
 // error handler
 onerror(app)
@@ -34,7 +41,6 @@ app.use(require('koa-static')(__dirname + '/public'))
 app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
-
 
 
 // logger

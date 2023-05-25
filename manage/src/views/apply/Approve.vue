@@ -143,7 +143,7 @@ const getApplyList = async ()=>{
   let params = {...queryForm,...pager,type:"approve"}
   let {list,page} = await GetApplyList(params)
   applyList.value = list
-  console.log('applyList :>> ', applyList);
+  
   pager.total = page.total
 }
 

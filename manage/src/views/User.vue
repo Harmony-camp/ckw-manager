@@ -15,18 +15,43 @@
             <el-option :value="2" label="离职"></el-option>
             <el-option :value="3" label="试用期"></el-option>
           </el-select>
-          
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="handleQuery">查询</el-button>
-            <el-button @click="handleReset(form)">重置</el-button>
-          </el-form-item>
+          <el-button type="primary" @click="handleQuery">查询</el-button>
+          <el-button @click="handleReset(form)">重置</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleCreate" v-has:add="'user-create'">新增</el-button>
-        <el-button type="danger" @click="handlePatchDelete"  v-has="'user-patch-delete'">批量删除</el-button>
+        <el-form inline>
+          <el-form-item>
+            <el-button
+              type="primary"
+              @click="handleCreate"
+              v-has:add="'user-create'"
+              >新增</el-button
+            >
+          </el-form-item>
+          <el-form-item>
+            <el-upload 
+              v-model:file-list="fileList" 
+              :auto-upload="false"
+              :show-file-list="false"
+              :on-change="fileChange"
+              >
+              <el-button type="success">批量导入</el-button>
+            </el-upload>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="danger"
+              @click="handlePatchDelete"
+              v-has="'user-patch-delete'"
+              >批量删除</el-button
+            >
+          </el-form-item>
+        </el-form>
       </div>
 
       <el-table :data="userList" @selection-change="handleSelectionChange">
@@ -42,7 +67,12 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.row)" v-has="'user-edit'">编辑</el-button>
+            <el-button
+              size="small"
+              @click="handleEdit(scope.row)"
+              v-has="'user-edit'"
+              >编辑</el-button
+            >
             <el-button
               type="danger"
               size="small"
@@ -61,46 +91,69 @@
         :page-size="pager.pageSize"
       />
     </div>
-    <el-dialog v-model="showModal" title="用户新增" >
-      <el-form :model="userForm" label-width="100px" ref="elUserForm" :rules="rules">
+    <el-dialog v-model="showModal" title="用户新增">
+      <el-form
+        :model="userForm"
+        label-width="100px"
+        ref="elUserForm"
+        :rules="rules"
+      >
         <el-form-item label="用户名" prop="username">
-          <el-input  v-model="userForm.username" :disabled="action == 'edit'" placeholder="请输入用户名称"/>
+          <el-input
+            v-model="userForm.username"
+            :disabled="action == 'edit'"
+            placeholder="请输入用户名称"
+          />
         </el-form-item>
         <el-form-item label="邮箱" prop="userEmail">
-          <el-input  v-model="userForm.userEmail" :disabled="action == 'edit'" placeholder="请输入用户邮箱">
+          <el-input
+            v-model="userForm.userEmail"
+            :disabled="action == 'edit'"
+            placeholder="请输入用户邮箱"
+          >
             <template #append>@gmail.com</template>
           </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
-          <el-input  v-model="userForm.mobile" placeholder="请输入手机号"/>
+          <el-input v-model="userForm.mobile" placeholder="请输入手机号" />
         </el-form-item>
         <el-form-item label="岗位" prop="job">
-          <el-input  v-model="userForm.job" placeholder="请输入岗位"/>
+          <el-input v-model="userForm.job" placeholder="请输入岗位" />
         </el-form-item>
-        <el-form-item  label="状态" prop="state">
+        <el-form-item label="状态" prop="state">
           <el-select v-model="userForm.state">
             <el-option :value="1" label="在职"></el-option>
             <el-option :value="2" label="离职"></el-option>
             <el-option :value="3" label="试用期"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item  label="系统角色" prop="roleList">
-          <el-select multiple style="width: 100%;" v-model="userForm.roleList" placeholder="请选择用户系统角色">
-            <el-option 
-              v-for="role in roleList" 
-              :key="role._id" 
+        <el-form-item label="系统角色" prop="roleList">
+          <el-select
+            multiple
+            style="width: 100%"
+            v-model="userForm.roleList"
+            placeholder="请选择用户系统角色"
+          >
+            <el-option
+              v-for="role in roleList"
+              :key="role._id"
               :label="role.roleName"
               :value="role._id"
-              ></el-option>
+            ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item   label="部门" prop="deptId">
+        <el-form-item label="部门" prop="deptId">
           <el-cascader
-          style="width: 100%;"
+            style="width: 100%"
             v-model="userForm.deptId"
             placeholder="请选择所属部门"
             :options="deptList"
-            :props="{expandTrigger: 'hover',checkStrictly:true,value:'_id',label:'deptName'}"
+            :props="{
+              expandTrigger: 'hover',
+              checkStrictly: true,
+              value: '_id',
+              label: 'deptName',
+            }"
             clearable
           >
           </el-cascader>
@@ -117,12 +170,19 @@
 </template>
 
 <script setup>
-import { reactive, ref ,toRaw,nextTick} from "vue";
-import { ElMessage } from "element-plus";
-import { UserSubmit,GetUserList, UserDelete,GetRoleAllList,GetDeptList } from "../api";
-import utils from '../utils/utils'
+import { reactive, ref, toRaw, nextTick } from "vue";
+import { ElMessage,ElLoading } from "element-plus";
+// import XLSX from 'xlsx'
 
 
+import {
+  UserSubmit,
+  GetUserList,
+  UserDelete,
+  GetRoleAllList,
+  GetDeptList,
+} from "../api";
+import utils from "../utils/utils";
 
 const columns = reactive([
   { label: "用户ID", prop: "userId" },
@@ -149,12 +209,20 @@ const columns = reactive([
       }[value];
     },
   },
-  { label: "注册时间", prop: "createTime",formatter(row,column,value){
-    return utils.formateDate(new Date(value))
-  } },
-  { label: "最后登录时间", prop: "lastLoginTime",formatter(row,column,value){
-    return utils.formateDate(new Date(value))
-  }  },
+  {
+    label: "注册时间",
+    prop: "createTime",
+    formatter(row, column, value) {
+      return utils.formateDate(new Date(value));
+    },
+  },
+  {
+    label: "最后登录时间",
+    prop: "lastLoginTime",
+    formatter(row, column, value) {
+      return utils.formateDate(new Date(value));
+    },
+  },
 ]);
 const pager = reactive({
   pageNum: 1,
@@ -162,44 +230,51 @@ const pager = reactive({
 });
 const userList = ref([]);
 const form = ref();
-const showModal = ref(false)
+const showModal = ref(false);
 const checkedUserIds = ref([]);
-const roleList = ref([])
-const deptList = ref([])
-const action = ref("add")
-const elUserForm = ref()
+const roleList = ref([]);
+const deptList = ref([]);
+const action = ref("add");
+const elUserForm = ref();
+const fileList = ref([])
+const previewFile = ref(false)
 const user = reactive({
   state: 1,
   username: "",
   userId: "",
 });
 const userForm = reactive({
-  state:3
-})
+  state: 3,
+});
 const rules = reactive({
-  username:[
+  username: [
     {
-      required:true,
-      message:"请输入用户名称",
-      trigger:"blur"
-    }
+      required: true,
+      message: "请输入用户名称",
+      trigger: "blur",
+    },
   ],
-  userEmail:[{
-    required:true,
-    message:"请输入用户邮箱",
-    trigger:"blur"
-  }],
-  mobile:[{
-    pattern:/1\d{10}/,
-    message:"请输入正确的手机格式"
-  }],
-  deptId:[{
-    required:true,
-    message:"请输入用户邮箱",
-    trigger:"blur"
-  }]
-})
-
+  userEmail: [
+    {
+      required: true,
+      message: "请输入用户邮箱",
+      trigger: "blur",
+    },
+  ],
+  mobile: [
+    {
+      pattern: /1\d{10}/,
+      message: "请输入正确的手机格式",
+    },
+  ],
+  deptId: [
+    {
+      required: true,
+      message: "请输入用户邮箱",
+      trigger: "blur",
+    },
+  ],
+});
 
 const getUserList = async () => {
   let params = { ...user, ...pager };
@@ -207,8 +282,8 @@ const getUserList = async () => {
     const { list, page } = await GetUserList(params);
     userList.value = list;
     pager.total = page.total;
-    console.log('page :>> ', page);
-    console.log('list :>> ', list);
+    console.log("page :>> ", page);
+    console.log("list :>> ", list);
   } catch (error) {
     console.log(error);
   }
@@ -232,7 +307,7 @@ const handleDelete = async (row) => {
     message: "删除成功",
     type: "success",
   });
-  getUserList()
+  getUserList();
 };
 
 const handlePatchDelete = async () => {
@@ -262,55 +337,63 @@ const handleSelectionChange = (list) => {
   });
   checkedUserIds.value = arr;
 };
-const handleCreate = ()=>{
-  action.value = 'add'
-  showModal.value = true
-  
-}
+const handleCreate = () => {
+  action.value = "add";
+  showModal.value = true;
+};
 
-const getDeptList = async ()=>{
-  const res = await GetDeptList()
-  deptList.value = res
-}
+const getDeptList = async () => {
+  const res = await GetDeptList();
+  deptList.value = res;
+};
 
-const getRoleList = async ()=>{
- const list = await GetRoleAllList()
- roleList.value = list
-}
+const getRoleList = async () => {
+  const list = await GetRoleAllList();
+  roleList.value = list;
+};
 
-const handleCancle = ()=>{
-  showModal.value  =  false
-  handleReset(elUserForm.value)
-}
+const handleCancle = () => {
+  showModal.value = false;
+  handleReset(elUserForm.value);
+};
 
-const handleSubmit = ()=>{
-  console.log('userForm :>> ', userForm);
-  elUserForm.value.validate(async valid=>{
-    if(valid){
-      let params = toRaw(userForm)
-      console.log('userForm :>> ', userForm.userEmail);
-      params.userEmail += "@gmail.com"
-      params.action = action.value
-      console.log('params :>> ', params);
-      let res = await UserSubmit(params)
-      showModal.value = false
-      ElMessage({message:"用户创建成功",type:"success"})
-      handleReset(elUserForm.value)
-      getUserList()
+const handleSubmit = () => {
+  console.log("userForm :>> ", userForm);
+  elUserForm.value.validate(async (valid) => {
+    if (valid) {
+      let params = toRaw(userForm);
+      console.log("userForm :>> ", userForm.userEmail);
+      params.userEmail += "@gmail.com";
+      params.action = action.value;
+      console.log("params :>> ", params);
+      let res = await UserSubmit(params);
+      showModal.value = false;
+      ElMessage({ message: "用户创建成功", type: "success" });
+      handleReset(elUserForm.value);
+      getUserList();
     }
-  })
-}
+  });
+};
 
-const handleEdit = (row)=>{
-  action.value = "edit"
-  showModal.value = true
-  nextTick(()=>{
-    Object.assign(userForm,row)
-  })
+const handleEdit = (row) => {
+  action.value = "edit";
+  showModal.value = true;
+  nextTick(() => {
+    Object.assign(userForm, row);
+  });
+};
+
+
+const fileChange = ()=>{
+
+  const loading = ElLoading.service()
+
+  loading.close()
   
 }
 
 getUserList();
-getRoleList()
-getDeptList()
+getRoleList();
+getDeptList();
+
 </script>

@@ -4,7 +4,7 @@
       <Query />
     </div>
     <div class="base-table">
-      <BaseTable :columns="columns">
+      <BaseTable :action="'patten'" :columns="columns">
         
       </BaseTable>
     </div>

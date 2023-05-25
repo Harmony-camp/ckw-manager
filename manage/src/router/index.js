@@ -87,10 +87,8 @@ async function loadAsyncRoutes(){
       routes.map(route=>{
         let url = `../views/${route.component}.vue`
         route.component =  ()=>import(/* @vite-ignore */url)
-        router.addRoute("home",route)
-        
+        router.addRoute("home",route)        
       })
-      
     }catch(error){
       console.log('error :>> ', error);
     }
@@ -99,13 +97,15 @@ async function loadAsyncRoutes(){
 
 await loadAsyncRoutes()
 function checkPermission(path){
-  let hasPermission =  router.getRoutes().filter(route=>route.path == path).length
-  if(hasPermission) return true
-  else return false
+  let routes =[]
+  router.getRoutes().forEach(item=>{
+    routes.push(item.path)
+  })
+  return routes.includes(path)
 }
 
 router.beforeEach((to,form,next)=>{
-  if(checkPermission(to.path) || to.path=="/"){
+  if(checkPermission(to.path) || to.path =="/"){
     document.title = to.meta.title
     next()
   }else{

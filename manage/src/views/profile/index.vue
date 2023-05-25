@@ -45,7 +45,7 @@
     <div class="right">
       <el-card>
         <el-menu
-          :default-active="this.$router.path"
+          :default-active="route.path"
           class="el-menu-demo"
           mode="horizontal"
           router
@@ -64,8 +64,12 @@
 import storage from "../../utils/storage";
 import utils from "../../utils/utils";
 import { jitangData } from "../../constants";
+import {useRoute} from 'vue-router'
+
 export default {
   setup() {
+    const route = useRoute()
+    
     const userinfo = storage.getItem("userinfo");
 
     userinfo.lastLoginTime = utils.formateDate(
@@ -74,7 +78,7 @@ export default {
     );
     let item = jitangData[Math.floor(Math.random() * jitangData.length)];
 
-    return { userinfo, item };
+    return { userinfo, item,route };
   },
 };
 </script>

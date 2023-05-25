@@ -36,6 +36,8 @@
                 multiple
                 ref="uploadRef"
                 :auto-upload="false"
+                :headers="token"
+                action="http://localhost:5173/api/teacher/upload"
                 v-model:file-list="awardData.fileList"
                 
               >
@@ -98,9 +100,11 @@
 
 
 import {ref,reactive,computed,defineProps} from 'vue'
-import {UploadSupportingDocuments} from '../api'
+import {dataToTestify} from '../api'
 import storage from '../utils/storage';
-const {columns,tableData} = defineProps({
+import { ElMessage } from 'element-plus';
+
+const {columns,tableData,action} = defineProps({
   columns: {
     type: Array,
     default: () => [],
@@ -108,11 +112,17 @@ const {columns,tableData} = defineProps({
   tableData:{
     type:Array,
     default:()=>[]
+  },
+  action:{
+    type:String,
+    default:()=>"award"
   }
 });
 const uploadRef = ref()
 const showDialog = ref(false)
 const dialogForm = ref()
+const userinfo = storage.getItem("userinfo")
+const token = {"Authorization":"Bearer "  + userinfo.token}
 const rules = {
   HTime:[
     {type:"date",required:true,message:"请选择一个日期",trigger:"change"}
@@ -121,8 +131,7 @@ const rules = {
 }
 const awardData = reactive({
   HType:1,
-  Level:1,
-  fileList:[]
+  Level:1
 })
 const integral = computed(()=>{
   return awardData.Level + awardData.HType
@@ -145,16 +154,14 @@ const handleSubmit = ()=>{
   
   dialogForm.value.validate(async valid =>{
     if(valid){
-      let formData = new FormData()
-
       let params = {...awardData}
       params.integral = integral.value
-      const userinfo = storage.getItem("userinfo")
       params.userId = userinfo.userId
       params.deptId = userinfo.deptId
-      for(const item in params) formData.append(item,params.item)
-      console.log('params :>> ', params);
-      // await UploadSupportingDocuments(formData)
+      params.action = action
+      uploadRef.value.submit()
+      await dataToTestify(params)
+      ElMessage({type:"success",message:"上传成功"})
     }
   })
 }

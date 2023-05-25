@@ -64,6 +64,7 @@ const router = useRouter()
 const userinfo = ref(store.state.userinfo)
 
 const activeMenu = ref(location.hash.slice(1))
+
 const userMenu = reactive({
   menu:[]
 })
@@ -76,7 +77,7 @@ const handleLogout = (key)=>{
   }
   store.commit("saveUserInfo","")
   userinfo.value = {}
-  router.push({to:"/login",params:userinfo})
+  router.push("/login")
 }
 
 async function getNoticeCount(){
@@ -168,7 +169,7 @@ getMenuList()
     .wrapper {
       background: #eef0f3;
       padding: 20px;
-      height: calc(100vh - 50px);
+      // min-height: calc(100vh - 50px);
       .main-page {
         background-color: #fff;
         height: 100%;

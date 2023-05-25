@@ -4,7 +4,7 @@
       <Query />
     </div>
     <div class="base-table">
-      <BaseTable>
+      <BaseTable :action="'project'">
         
       </BaseTable>
     </div>

@@ -167,10 +167,12 @@ export const GetApplyList  = params=>request.get("/leave/list",params,{mock:fals
 export const LeaveOperate  = params=>request.post("/leave/operate",params,{mock:false})
 export const LeaveApprove  = params=>request.post("/leave/approve",params,{mock:false})
 
-export const UploadSupportingDocuments  = params=>request.post("/teacher/upload",params)
+export const dataToTestify  = params=>request.post("/teacher/createTestify",params)
 
 //获取注册页面角色
 export const getRegisterRoleList = params=>request.get("/roles/allList",params)
 
 //获取模块分类排序数据
 export const querySortList = params=>request.get("/teacher/query",params)
+
+export const GetTeacherApprovalList = params=>request.get("/teacher/approvalList",params)

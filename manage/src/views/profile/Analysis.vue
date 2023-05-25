@@ -17,7 +17,7 @@
       <div class="footer-items">
         <div id="echarts-line"></div>
         <div class="echarts-items">
-          <div id="pie"> </div>
+          <div id="pie"></div>
           <div id="sales"></div>
         </div>
       </div>
@@ -26,7 +26,8 @@
 </template>
 
 <script>
-import { ref, reactive, onActivated } from "vue";
+import { ref, reactive, onMounted,watch } from "vue";
+
 import * as echarts from "echarts";
 
 export default {
@@ -54,9 +55,7 @@ export default {
         item: "999",
       },
     ]);
-    onActivated(() => {
-      var lineDom = echarts.init(document.getElementById("echarts-line"));
-      var lineOption;
+    var lineOption;
       lineOption = {
         xAxis: {
           type: "category",
@@ -73,114 +72,120 @@ export default {
           },
         ],
       };
-      lineOption && lineDom.setOption(lineOption);
+      let pieOption;
 
-      let pieDom = echarts.init(document.getElementById("pie"))
-      let pieOption
-      
-      pieOption =  {
-  backgroundColor: '#2c343c',
-  title: {
-    text: 'Customized Pie',
-    left: 'center',
-    top: 20,
-    textStyle: {
-      color: '#ccc'
-    }
-  },
-  tooltip: {
-    trigger: 'item'
-  },
-  visualMap: {
-    show: false,
-    min: 80,
-    max: 600,
-    inRange: {
-      colorLightness: [0, 1]
-    }
-  },
-  series: [
-    {
-      name: 'Access From',
-      type: 'pie',
-      radius: '55%',
-      center: ['50%', '50%'],
-      data: [
-        { value: 335, name: 'Direct' },
-        { value: 310, name: 'Email' },
-        { value: 274, name: 'Union Ads' },
-        { value: 235, name: 'Video Ads' },
-        { value: 400, name: 'Search Engine' }
-      ].sort(function (a, b) {
-        return a.value - b.value;
-      }),
-      roseType: 'radius',
-      label: {
-        color: 'rgba(255, 255, 255, 0.3)'
-      },
-      labelLine: {
-        lineStyle: {
-          color: 'rgba(255, 255, 255, 0.3)'
-        },
-        smooth: 0.2,
-        length: 10,
-        length2: 20
-      },
-      itemStyle: {
-        color: '#c23531',
-        shadowBlur: 200,
-        shadowColor: 'rgba(0, 0, 0, 0.5)'
-      },
-      animationType: 'scale',
-      animationEasing: 'elasticOut',
-      animationDelay: function (idx) {
-        return Math.random() * 200;
-      }
-    }
-  ]
-      };
-      pieOption && pieDom.setOption(pieOption)
-
-      let salesDom = echarts.init(document.getElementById("sales"))
-      let salesOption
-      salesOption =  {
+      pieOption = {
+        backgroundColor: "#2c343c",
         title: {
-          text: 'Basic Radar Chart'
+          text: "Customized Pie",
+          left: "center",
+          top: 20,
+          textStyle: {
+            color: "#ccc",
+          },
+        },
+        tooltip: {
+          trigger: "item",
+        },
+        visualMap: {
+          show: false,
+          min: 80,
+          max: 600,
+          inRange: {
+            colorLightness: [0, 1],
+          },
+        },
+        series: [
+          {
+            name: "Access From",
+            type: "pie",
+            radius: "55%",
+            center: ["50%", "50%"],
+            data: [
+              { value: 335, name: "Direct" },
+              { value: 310, name: "Email" },
+              { value: 274, name: "Union Ads" },
+              { value: 235, name: "Video Ads" },
+              { value: 400, name: "Search Engine" },
+            ].sort(function (a, b) {
+              return a.value - b.value;
+            }),
+            roseType: "radius",
+            label: {
+              color: "rgba(255, 255, 255, 0.3)",
+            },
+            labelLine: {
+              lineStyle: {
+                color: "rgba(255, 255, 255, 0.3)",
+              },
+              smooth: 0.2,
+              length: 10,
+              length2: 20,
+            },
+            itemStyle: {
+              color: "#c23531",
+              shadowBlur: 200,
+              shadowColor: "rgba(0, 0, 0, 0.5)",
+            },
+            animationType: "scale",
+            animationEasing: "elasticOut",
+            animationDelay: function (idx) {
+              return Math.random() * 200;
+            },
+          },
+        ],
+      };
+      let salesOption;
+      salesOption = {
+        title: {
+          text: "Basic Radar Chart",
         },
         legend: {
-          data: ['Allocated Budget', 'Actual Spending']
+          data: ["Allocated Budget", "Actual Spending"],
         },
         radar: {
           // shape: 'circle',
           indicator: [
-            { name: 'Sales', max: 6500 },
-            { name: 'Administration', max: 16000 },
-            { name: 'Information Technology', max: 30000 },
-            { name: 'Customer Support', max: 38000 },
-            { name: 'Development', max: 52000 },
-            { name: 'Marketing', max: 25000 }
-          ]
+            { name: "Sales", max: 6500 },
+            { name: "Administration", max: 16000 },
+            { name: "Information Technology", max: 30000 },
+            { name: "Customer Support", max: 38000 },
+            { name: "Development", max: 52000 },
+            { name: "Marketing", max: 25000 },
+          ],
         },
         series: [
           {
-            name: 'Budget vs spending',
-            type: 'radar',
+            name: "Budget vs spending",
+            type: "radar",
             data: [
               {
                 value: [4200, 3000, 20000, 35000, 50000, 18000],
-                name: 'Allocated Budget'
+                name: "Allocated Budget",
               },
               {
                 value: [5000, 14000, 28000, 26000, 42000, 21000],
-                name: 'Actual Spending'
-              }
-            ]
-          }
-        ]
+                name: "Actual Spending",
+              },
+            ],
+          },
+        ],
       };
+    onMounted(() => {
+      var line = document.getElementById("echarts-line");
+      line.removeAttribute("_echarts_instance_")
+      let lineDom = echarts.init(line)
+      lineOption && lineDom.setOption(lineOption);
 
-      salesOption && salesDom.setOption(salesOption)
+      let pie = document.getElementById("pie");
+      pie.removeAttribute("_echarts_instance_")
+      let pieDom = echarts.init(pie)
+      pieOption && pieDom.setOption(pieOption);
 
+      let sales = document.getElementById("sales");
+      sales.removeAttribute("_echarts_instance_")
+      let salesDom = echarts.init(sales)
+      salesOption && salesDom.setOption(salesOption);
     });
     return { headerData };
   },
@@ -235,12 +240,12 @@ export default {
       height: 200px;
       background-color: #fff;
       margin: 10px auto;
-      #pie{
+      #pie {
         flex: 1;
         height: 100%;
         padding-right: 3px;
       }
-      #sales{
+      #sales {
         flex: 1;
         height: 100%;
       }
