@@ -175,4 +175,5 @@ export const getRegisterRoleList = params=>request.get("/roles/allList",params)
 //获取模块分类排序数据
 export const querySortList = params=>request.get("/teacher/query",params)
 
-export const GetTeacherApprovalList = params=>request.get("/teacher/approvalList",params)
+export const GetTeacherlList = params=>request.get("/teacher/list",params)
+export const GetTeacherApprovallList = params=>request.get("/teacher/approvalList",params)

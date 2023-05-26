@@ -9,20 +9,20 @@ import storage from './utils/storage'
 
 const app = createApp(App)
 
-// app.directive("has",{
-// 	beforeMount:(el,binding)=>{
+app.directive("has",{
+	beforeMount:(el,binding)=>{
 		
-// 		let actionList = storage.getItem("actionList")
-// 		let value = binding.value
-// 		let hasPermission = actionList.includes(value)
-// 		if(!hasPermission){
-// 			el.style="display:none"
-// 			setTimeout(()=>{
-// 				el.parentNode.removeChild(el)
-// 			},0)
-// 		}
-// 	}
-// })
+		let actionList = storage.getItem("actionList")
+		let value = binding.value
+		let hasPermission = actionList.includes(value)
+		if(!hasPermission){
+			el.style="display:none"
+			setTimeout(()=>{
+				el.parentNode.removeChild(el)
+			},0)
+		}
+	}
+})
 
 for (let iconName in ELIcons) {
 	app.component(iconName, ELIcons[iconName])

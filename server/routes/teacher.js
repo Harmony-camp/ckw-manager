@@ -1,10 +1,12 @@
 const router = require("koa-router")()
 const Teacher = require("../models/teacherSchema")
+const User = require("../models/userSchema")
 const log4js = require("../utils/log4j")
 const { koaBody } = require('koa-body')
 const util = require("../utils/util")
 const fs = require("fs")
 const path = require("path")
+const { log } = require("console")
 
 router.prefix("/teacher")
 
@@ -59,8 +61,22 @@ router.post("/createTestify",async ctx=>{
   ctx.body = util.success("上传成功")
 })
 
+router.get("/list",async ctx=>{
+  const {action,userId}  = ctx.request.query
+  let user = await User.findOne({userId})
+  
+  let res
+  if(user.role == 0){
+    
+    res =  await  Teacher.find({action:action})
+  }else{
+    res = await Teacher.find({action,userId})
+  }
+  ctx.body = util.success(res)
+})
+
 router.get("/approvalList",async ctx=>{
-  const {}  = ctx.request.query
+  
 })
 
 module.exports = router

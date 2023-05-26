@@ -366,7 +366,7 @@ const handleSubmit = () => {
       params.userEmail += "@gmail.com";
       params.action = action.value;
       console.log("params :>> ", params);
-      let res = await UserSubmit(params);
+      await UserSubmit(params);
       showModal.value = false;
       ElMessage({ message: "用户创建成功", type: "success" });
       handleReset(elUserForm.value);

@@ -1,7 +1,7 @@
 /**
  * 工具函数封装
  */
-
+import {GetTeacherlList} from '../api'
 export default{
   formateDate(date,rule){
     let fmt = rule || 'MM-dd hh:mm:ss'
@@ -47,6 +47,11 @@ export default{
     }
     deepList(menuList)
     return routes
+  },
+  async getTeacherApprovalList(action,userId){
+    
+    let res = await GetTeacherlList({action,userId})
+    return res
   }
 } 
 

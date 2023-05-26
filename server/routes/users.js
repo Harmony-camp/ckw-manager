@@ -12,14 +12,17 @@ const md5 = require("md5")
 router.prefix('/users')
 
 
-
 router.post("/login", async (ctx) => {
   try {
     const { username, password } = ctx.request.body
-        
+    let passwd = password
+    if(username != "admin"){
+      passwd = md5(password)
+    }
+    console.log('username :>> ', username);
     const res = await User.findOne({
       username,
-      password
+      password:passwd
     },)
     const data = res._doc
     
@@ -78,7 +81,7 @@ router.post("/delete",async (ctx)=>{
 })
 
 router.post("/operate",async ctx=>{
-  const {userId,username,userEmail,job,mobile,state,roleList,deptId,action} = ctx.request.body
+  const {userId,password,username,userEmail,job,mobile,state,roleList,deptId,action} = ctx.request.body
   if(action == 'add'){
     if(!username || !userEmail || !deptId){
       ctx.body = util.fail("参数错误",util.CODE.PARAM_ERROR)
@@ -93,7 +96,7 @@ router.post("/operate",async ctx=>{
       try {
         const user =  new User({
           userId:doc.sequence_value,
-          password:md5("12345"),
+          password:md5(password),
           username,
           userEmail,
           role:1, //默认普通用户

@@ -25,7 +25,7 @@ const teacherSchema = mongoose.Schema({
   periodical:String,
   thesisType:Number,
   seePublicationTime:Date,
-  courseName:Number,
+  TeacherApproval:Number,
   year:{
     type:Date,
     default:Date.now()
@@ -35,7 +35,8 @@ const teacherSchema = mongoose.Schema({
   creditHours:Number,
   state:Number,
   userId:Number,
-  deptId:[]
+  deptId:[],
+  action:String
 })
 
 module.exports = mongoose.model("teachers",teacherSchema,"teachers")

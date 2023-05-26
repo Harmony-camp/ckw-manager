@@ -1,14 +1,23 @@
 <template>
-  <div class="teacher-manage">
-    tt
+  <div>
+
   </div>
 </template>
 
-<script setup>
- import {GetTeacherApprovalList} from '../../api'
+<script>
+import {GetTeacherApprovallList} from '../../api'
+import storage from '../../utils/storage';
+import {ref,reactive} from 'vue'
+export default {
+  setup () {
+    const userinfo = storage.getItem("userinfo")
 
-let res =  await GetTeacherApprovalList()
+    GetTeacherApprovallList({_id:userinfo._id}).then(res=>{
 
+    })
+    return {}
+  }
+}
 </script>
 
 <style lang="scss" scoped>
