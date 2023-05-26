@@ -1,3 +1,0 @@
-{"_id":{"$oid":"646ae4d15546ccbea8a3f4a0"},"roleName":"教师","permissionList":{"checkedKeys":[],"halfCheckedKeys":[]},"updateTime":{"$date":"2023-05-22T03:41:00.152Z"},"createTime":{"$date":"2023-05-22T03:41:00.152Z"},"__v":0}
-{"_id":{"$oid":"646afa018ec4f4924eb22435"},"roleName":"学生","permissionList":{"checkedKeys":[],"halfCheckedKeys":[]},"updateTime":{"$date":"2023-05-22T05:01:34.909Z"},"createTime":{"$date":"2023-05-22T05:01:34.909Z"},"__v":0}
-{"_id":{"$oid":"646afa608ec4f4924eb22439"},"roleName":"jiawule ","permissionList":{"checkedKeys":[],"halfCheckedKeys":[]},"updateTime":{"$date":"2023-05-22T05:01:34.909Z"},"createTime":{"$date":"2023-05-22T05:01:34.909Z"},"__v":0}

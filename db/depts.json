@@ -1,2 +1,0 @@
-{"_id":{"$oid":"646ae4f65546ccbea8a3f4a6"},"deptName":"支援","userId":"1000002","username":"admin","userEmail":"admin@imooc.com","parentId":[null],"updateTime":{"$date":"2023-05-22T03:41:00.16Z"},"createTime":{"$date":"2023-05-22T03:41:00.16Z"},"__v":0}
-{"_id":{"$oid":"646ae51d5546ccbea8a3f4b2"},"deptName":"教务科","userId":"1000002","username":"admin","userEmail":"admin@imooc.com","parentId":[{"$oid":"646ae4f65546ccbea8a3f4a6"}],"updateTime":{"$date":"2023-05-22T03:41:00.16Z"},"createTime":{"$date":"2023-05-22T03:41:00.16Z"},"__v":0}
