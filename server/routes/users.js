@@ -7,7 +7,7 @@ const util = require("../utils/util")
 const jwt = require("jsonwebtoken")
 const log4js = require("../utils/log4j")
 const md5 = require("md5")
-
+const nodemailer = require("nodemailer")
 
 router.prefix('/users')
 
@@ -180,6 +180,15 @@ function getAction(list){
   deep(list)
   return _actionList
 }
+
+router.get("/emailcode",ctx=>{
+  const {email} = ctx.request.query
+  
+  const code = Math.random().toFixed(6).slice(-6)
+  console.log('email :>> ', email);
+  util.sendMail(email,code)
+  ctx.body = util.success(code)
+})
 
 
 module.exports = router

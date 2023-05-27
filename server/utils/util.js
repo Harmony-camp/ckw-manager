@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken")
 const log4js = require("./log4j")
+const nodemailer = require('nodemailer'); //引入模块
+
 
 const CODE = {
   SUCCESS:200,
@@ -88,4 +90,51 @@ formateDate(date,rule){
   }
   return date.getFullYear() + fmt
 },
+  async sendMail(mail,code,call){
+    let transporter = nodemailer.createTransport({
+      service:"qq",
+      auth: {
+        user: "3034221968@qq.com",
+        pass: "eduwarriiflhdcgg"
+      }
+    })
+    const receiver = {
+      from:"'yyy'<3034221968@qq.com>",
+      subject:"修改密码",
+      to:mail,
+      text:"1",
+      html:`
+      <h1>你好,以下是您的邮箱验证码，</h1>
+      <br>
+      <table width="100%" style="border-collapse: collapse; border-spacing: 0;border: 0;height:120px;">
+                      <tr height="40px" style="padding: 0;border: 0;">
+                          <td style="width: 50px;font-size: 16px;font-weight: bold;line-height: 21px;color: rgba(255, 95, 46, 1);"
+                              colspan="1"> 验证码： </td>
+                          <td style="font-size: 16px;font-weight: 400;line-height: 21px;color: rgba(151, 151, 151, 1);"
+                              colspan="3"> ${code} </td>
+                      </tr>
+                      <tr>
+                          <td colspan="4"
+                              style="font-size: 14px;font-weight: bold;line-height: 19px;color: rgba(151, 151, 151, 1);  padding: 0;border: 0;">
+                              请不要将此码给其他人</td>
+                      </tr>
+                      <tr>
+                          <td style="font-size: 14px;font-weight: bold;line-height: 19px;color: rgba(151, 151, 151, 1);  padding: 0;border: 0;"
+                              colspan="1"> 有问题请联系管理员:</td>
+                          <td style="position: relative;left: -10px;font-size: 12px;line-height: 19px;color: rgba(151, 151, 151, 1); padding: 0;border: 0;"
+                              colspan="1" style="position: relative;left: -10px;font-size: 12px;line-height: 19px;color:
+                              rgba(151, 151, 151, 1);">
+                              yangt.feichangshuai@gmail.com</td>
+                          <td style="font-size: 14px;font-weight: bold;line-height: 19px;color: rgba(151, 151, 151, 1);  padding: 0;border: 0;"
+                              colspan="1"> github:</td>
+                          <td style="position: relative;left: -10px;font-size: 12px;line-height: 19px;color: rgba(151, 151, 151, 1); padding: 0;border: 0;"
+                              colspan="1">https://github.com/Harmony-camp/ckw-manager</td>
+                      </tr>
+                      
+                  </table>
+      `
+    }
+    let info = await transporter.sendMail(receiver)
+
+  }
 }
