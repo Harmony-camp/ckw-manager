@@ -1,0 +1,34 @@
+<template>
+  <div class="forgot-wrapper">
+    <div class="modal">
+      <el-steps :space="200" :active="1" finish-status="success">
+      <el-step title="Done" />
+      <el-step title="Processing" />
+      <el-step title="Step 3" />
+    </el-steps>
+    </div>
+  </div>
+</template>
+
+<script setup>
+
+</script>
+
+<style lang="scss">
+.forgot-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9fcff;
+  width: 100vw;
+  height: 100vh;
+  .modal {
+    width: 600px;
+    padding: 50px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 3px #c7c9cb4d;
+    
+  }
+}
+</style>
