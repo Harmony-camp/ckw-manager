@@ -40,11 +40,13 @@
         </el-form-item>
         <el-form-item prop="role">
           <el-select v-model="user._id" style="width: 100%">
+            <template  v-for="item in user.role">
             <el-option
-              v-for="item in user.role"
               :value="item._id"
               :label="item.roleName"
+              v-if="item.roleName!='管理员'"
             />
+          </template>
           </el-select>
         </el-form-item>
         <el-form-item prop="dept">

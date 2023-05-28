@@ -37,11 +37,12 @@ router.get("/query", async ctx=>{
   }
 })
 
+
 router.post("/upload",koaBody(),async ctx=>{
-  
   const file = ctx.request.files.file; // 获取上传文件
   // console.log('files :>> ', file);
   // 创建可读流
+  console.log('file :>> ', file);
   const reader = fs.createReadStream(file.filepath);
   let filePath = path.join(__dirname, '../public/upload/') + `/${file.originalFilename}`;
   // 创建可写流

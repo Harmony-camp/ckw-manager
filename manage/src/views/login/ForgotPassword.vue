@@ -33,7 +33,7 @@
           <el-form :model="setPasswd" :rules="rules" ref="resetPass">
             <el-form-item prop="password">
               <el-input
-                v-model="setPasswd.password"
+                v-model=" ``.password"
                 type="password"
                 ref="passwd"
                 :prefix-icon="Lock"
