@@ -61,7 +61,8 @@ app.use(koajwt({secret:"key"}).unless({
     "/api/users/operate",
     "/api/dept/list",
     "/api/roles/allList",
-    "/api/users/emailcode"
+    "/api/users/emailcode",
+    "/api/teacher/getFile",
   ]
 }))
 

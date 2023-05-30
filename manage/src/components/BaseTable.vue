@@ -142,8 +142,8 @@ const viewData = ref([])
 const handleView = (row)=>{
   showModal.value = true
   
-  viewData.value.push(row.HType)
-  viewData.value.push(row.Level)
+  viewData.value.push(columns[0].formatter(1,1,row.HType))
+  viewData.value.push(columns[1].formatter(1,1,row.Level))
   viewData.value.push(utils.formateDate(new Date(row.HTime),"MM-dd"))
   viewData.value.push(row.integral)
   

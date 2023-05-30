@@ -1,12 +1,12 @@
 const router = require("koa-router")()
 const Teacher = require("../models/teacherSchema")
 const User = require("../models/userSchema")
+const Dept = require("../models/deptSchema")
 const log4js = require("../utils/log4j")
 const { koaBody } = require('koa-body')
 const util = require("../utils/util")
 const fs = require("fs")
 const path = require("path")
-const { log } = require("console")
 
 router.prefix("/teacher")
 
@@ -42,7 +42,7 @@ router.post("/upload",koaBody(),async ctx=>{
   const file = ctx.request.files.file; // 获取上传文件
   // console.log('files :>> ', file);
   // 创建可读流
-  console.log('file :>> ', file);
+  
   const reader = fs.createReadStream(file.filepath);
   let filePath = path.join(__dirname, '../public/upload/') + `/${file.originalFilename}`;
   // 创建可写流
@@ -54,11 +54,20 @@ router.post("/upload",koaBody(),async ctx=>{
 })
 
 router.post("/createTestify",async ctx=>{
-  const testify = ctx.request.body
-  console.log('testify :>> ', testify);
-  let params = {...testify}
+  const {  ...params } = ctx.request.body
+  let authorization = ctx.request.headers.authorization
+  let {data} = util.decoded(authorization)
+  let user = await Dept.find({deptName:"审批"})
+  user = user[0]
+  let auditUserName = user.username
+  let auditUserId = user.userId
+  let applyUser= {"userId":data.userId,"username":data.username,"userEmail":data.userEmail}
+
   params.state = 1
-  Teacher.create(params)
+  params.auditUserName = auditUserName
+  params.applyUser = applyUser
+  params.auditUserId = auditUserId
+  await Teacher.create(params)
   ctx.body = util.success("上传成功")
 })
 
@@ -77,7 +86,48 @@ router.get("/list",async ctx=>{
 })
 
 router.get("/approvalList",async ctx=>{
-  
+  const { applyState, action } = ctx.request.query
+  const { page, skipIndex } = util.pager(ctx.request.query)
+  let authorization = ctx.request.headers.authorization
+  let { data } = util.decoded(authorization)
+  try {
+    let params = {}
+    if (action == "award") {
+      if (applyState == 1 || applyState == 2) {
+        params.$or = [{"applyUser.userId": data.userId,$or:[{state:1},{state:2}] },{auditUserId:data.userId,$or:[{state:1},{state:2}]}]
+      } else if (applyState > 2) {
+        params = {"applyUser.userId": data.userId ,applyState}
+      } else {
+        params = {deptId: data.userId }
+      }
+    } else {
+      params = {"applyUser.userId": data.userId }
+      if (applyState) params.state = applyState
+    }
+    
+    const query =  Teacher.find(params)
+    // console.log('query :>> ', query);
+    const list = await query.skip(skipIndex).limit(page.pageSize)
+    const total = await Teacher.countDocuments(params)
+    ctx.body = util.success({
+      page: {
+        ...page,
+        total
+      },
+      list
+    })
+  } catch (error) {
+    ctx.body = util.fail(`查询失败${error.stack}`)
+  }
+})
+
+router.get("/getFile",ctx=>{
+  const {fileName}  = ctx.request.query
+  console.log('fileName :>> ', fileName);
+  ctx.type = (fileName.name + '').substring( (fileName.name + '').lastIndexOf(".")+1);
+  // 读取文件
+  const pathUrl = path.join(__dirname, `../public/upload/${fileName}`);
+  ctx.body = util.success(fs.createReadStream(pathUrl))
 })
 
 module.exports = router

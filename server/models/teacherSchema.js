@@ -5,6 +5,13 @@ const teacherSchema = mongoose.Schema({
   HTime:Date,  // 获奖时间,
   HType:Number, //获奖类型 优秀教师....
   fileList:[],
+  auditUserName:String,
+  applyUser:{
+    userId:String,
+    username:String,
+    userEmail:String
+  },
+  auditUserId:String,
   integral:Number, //积分
   XType:Number, //项目类型
   subjectProject:String,  //教改项目、课题项目

@@ -33,7 +33,7 @@
           <el-form :model="setPasswd" :rules="rules" ref="resetPass">
             <el-form-item prop="password">
               <el-input
-                v-model=" ``.password"
+                v-model="setPasswd.password"
                 type="password"
                 ref="passwd"
                 :prefix-icon="Lock"
@@ -114,6 +114,7 @@ async function getEmailCode(){
 function setIdentity(){
   if(!identity.email)return ElMessage({type:"error",message:"请输入邮箱"})
   if(!identity.code)return ElMessage({type:"error",message:"验证码不能为空"})
+  if (!code.value) return ElMessage({type:"error",message:"请从新获取验证码"})
   if(md5(identity.code) != code.value.code) ElMessage({type:"error",message:"验证码错误"})
   active.value = 2
 }

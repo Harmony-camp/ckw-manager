@@ -111,7 +111,13 @@
             :disabled="action == 'edit'"
             placeholder="请输入用户邮箱"
           >
-            <template #append>@gmail.com</template>
+          <template #append>
+              <el-select v-model="userForm.email">
+                <el-option value="@gmail.com" label="@gmail.com"></el-option>
+                <el-option value="@qq.com" label="@qq.com"></el-option>
+                <el-option value="@163.com" label="@163.com"></el-option>
+              </el-select>
+            </template>
           </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
@@ -237,7 +243,7 @@ const deptList = ref([]);
 const action = ref("add");
 const elUserForm = ref();
 const fileList = ref([])
-const previewFile = ref(false)
+
 const user = reactive({
   state: 1,
   username: "",
@@ -245,6 +251,7 @@ const user = reactive({
 });
 const userForm = reactive({
   state: 3,
+  email:"@qq.com"
 });
 const rules = reactive({
   username: [
@@ -363,7 +370,7 @@ const handleSubmit = () => {
     if (valid) {
       let params = toRaw(userForm);
       
-      params.userEmail += "@gmail.com";
+      params.userEmail = userForm.userEmail + userForm.email
       params.action = action.value;
       
       await UserSubmit(params);

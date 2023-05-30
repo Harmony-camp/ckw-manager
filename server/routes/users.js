@@ -7,7 +7,7 @@ const util = require("../utils/util")
 const jwt = require("jsonwebtoken")
 const log4js = require("../utils/log4j")
 const md5 = require("md5")
-const nodemailer = require("nodemailer")
+
 
 router.prefix('/users')
 
@@ -15,20 +15,20 @@ router.prefix('/users')
 router.post("/login", async (ctx) => {
   try {
     const { username, password } = ctx.request.body
-    let passwd = password
+    let passwd =password
     if(username != "admin"){
       passwd = md5(password)
     }
+
     console.log('username :>> ', username);
     const res = await User.findOne({
       username,
       password:passwd
     },)
-    const data = res._doc
-    
-    const token = jwt.sign({ data }, "key", { expiresIn: '10h' })
 
     if (res) {
+      const data = res._doc
+      const token = jwt.sign({ data }, "key", { expiresIn: '10h' })
       data.token = token
       ctx.body = util.success(data)
 
@@ -94,9 +94,11 @@ router.post("/operate",async ctx=>{
     }else{
       const doc = await Counter.findOneAndUpdate({_id:"userId"},{$inc:{sequence_value:1}},{new:true})
       try {
+        let a =  password ?  md5(password):md5(123456)
+        console.log('password :>> ', password);
         const user =  new User({
           userId:doc.sequence_value,
-          password:md5(password),
+          password: a,
           username,
           userEmail,
           role:1, //默认普通用户
@@ -118,8 +120,9 @@ router.post("/operate",async ctx=>{
       return
     }
     try {
-      password &&  password ? md5(password):password
-      const res = await User.findOneAndUpdate({userId},{mobile,job,state,roleList,deptId,password})
+      let a =  password ? md5(password): md5(123456)
+      
+      await User.findOneAndUpdate({userId},{mobile,job,state,roleList,deptId,password:a})
       ctx.body = util.success({},"更新成功")
     } catch (error) {
       ctx.body = util.fail(error.stack+"更新失败")  
